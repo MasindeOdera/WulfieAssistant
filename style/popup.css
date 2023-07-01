@@ -1,0 +1,290 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  width: 680px;
+  min-height: 580px;
+}
+
+*::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-thumb {
+  width: 20px;
+  border-radius: 13px;
+  background-clip: padding-box;
+  border: 6px solid transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #06181f;
+}
+
+.container {
+  max-width: 640px;
+  width: 640px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  height: 66px;
+  background: #06181f;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+header>a svg {
+  width: 60px;
+  height: 60px;
+  display: block;
+}
+
+header>h1.title {
+  margin-left: 8px !important;
+  color: #fff !important;
+  -webkit-animation: fadeIn 1.4s;
+  -moz-animation: fadeIn 1.4s;
+  -o-animation: fadeIn 1.4s;
+  -ms-animation: fadeIn 1.4s;
+  animation: fadeIn 1.4s;
+}
+
+#beerwulf-logo path {
+  fill: transparent;
+  stroke-width: 1;
+  stroke: #cccccc;
+  stroke-dasharray: 420;
+  stroke-dashoffset: 0;
+  animation: animate-logo 1.8s linear forwards;
+}
+
+@keyframes animate-logo {
+  0% {
+    stroke-dashoffset: 0;
+    fill-opacity: 0%;
+    fill: transparent;
+  }
+
+  40% {
+    stroke-dashoffset: 420;
+  }
+
+  80% {
+    stroke-dashoffset: 840;
+    fill-opacity: 100%;
+  }
+
+  100% {
+    stroke-dashoffset: 840;
+    fill-opacity: 100%;
+    fill: #fff;
+  }
+}
+
+.wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 10px auto;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #efefef;
+}
+
+.add,
+.save-selected-sites {
+  width: 160px;
+}
+
+.add {
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 4px;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.restriction {
+  display: flex;
+  gap: 1.5em;
+  margin: 10px 0;
+  height: 44px;
+}
+
+.hide {
+  display: none;
+}
+
+.message.is-danger {
+  width: 260px;
+}
+
+.message-body {
+  font-size: 0.8rem;
+  padding: 4px;
+}
+
+.message.is-info .message-body {
+  font-size: 1rem;
+}
+
+section,
+.save-selected-sites {
+  -webkit-animation: fadeIn 2s;
+  -moz-animation: fadeIn 2s;
+  -o-animation: fadeIn 2s;
+  -ms-animation: fadeIn 2s;
+  animation: fadeIn 2s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Hide Save Selection button if all inputs have been removed. */
+.sites-to-block:empty+.save-selected-sites {
+  display: none;
+}
+
+.save-selected-sites {
+  display: block;
+}
+
+.remove {
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: red;
+  margin: auto 0px;
+}
+
+input {
+  padding: 8px 10px;
+  width: 280px;
+  border-radius: 5px;
+}
+
+input:focus {
+  outline: 1px solid #efefef;
+}
+
+.sites-to-block {
+  margin-bottom: 10px;
+}
+
+.fa-solid.fa-ban.active {
+  color: #ff0000;
+}
+
+.fa-solid.fa-camera.active {
+  color: #1781d8;
+}
+
+.fa-solid.fa-clipboard-list.active {
+  color: #0ef08a;
+}
+
+.fa-solid.fa-bug.active {
+  color: #f30303;
+}
+
+.screenshots.layout,
+.checklist.layout,
+.reporter.layout {
+  display: none;
+}
+
+.screenshots>.content>.message {
+  margin: 10px auto;
+}
+
+.url-right,
+.url-wrong {
+  display: none;
+
+}
+
+.show {
+  display: flex;
+}
+
+.input:focus~.icon.is-small.is-right.url-right.show {
+  color: #039553;
+}
+
+.input:focus~.icon.is-small.is-right.url-wrong.show {
+  color: #eb1c1c;
+}
+
+.capture-screenshots {
+  display: flex;
+  align-items: center;
+}
+
+.message.is-warning {
+  width: 430px;
+  margin-left: 20px;
+}
+
+.message.is-warning .message-body {
+  font-size: 1rem;
+  padding: 7px 16px;
+}
+
+#extra-url {
+  margin: 0.5rem auto;
+  width: 170px;
+}
