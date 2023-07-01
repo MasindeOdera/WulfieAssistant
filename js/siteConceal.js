@@ -75,6 +75,9 @@ export function addInput(siteBlocked = ""){
   // Otherwise, give the newly created input focus.
   typeof siteBlocked === 'string' ? site.value = siteBlocked : site.focus();
   restriction.appendChild(btn);
+
+  // Scroll to bottom if the input is focused.
+  if (typeof siteBlocked !== 'string') window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
   
   // Create hidden error message.
   const errorMessage = document.createElement("article");

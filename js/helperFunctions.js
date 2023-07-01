@@ -28,8 +28,9 @@ export function observeSectionHeight(element){
         mutation.type === "childList" ||
         mutation.type === "subtree"
       ) {
+        console.log('tab height: ', element.clientHeight);
         // Check the height of the container div
-        if (element.clientHeight > 440) {
+        if (element.clientHeight > 454) {
           // Create the anchor tag if it doesn't already exist
           if (!document.getElementById("anchorTag")) {
             var anchorTag = document.createElement("a");
