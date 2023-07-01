@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wulfie Assistant Popup</title>
+  <link rel="stylesheet" href="./style/all.min.css">
+  <link rel="stylesheet" href="./style/bulma.min.css" />
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      width: 680px;
+      min-height: 580px;
+    }
+
+    *::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      background-color: #F5F5F5;
+    }
+
+    *::-webkit-scrollbar,
+    *::-webkit-scrollbar-thumb {
+      width: 20px;
+      border-radius: 13px;
+      background-clip: padding-box;
+      border: 6px solid transparent;
+    }
+
+    *::-webkit-scrollbar-thumb {
+      background-color: #06181f;
+    }
+
+    .container {
+      max-width: 640px;
+      width: 640px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      height: 66px;
+      background: #06181f;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+
+    header>a svg {
+      width: 60px;
+      height: 60px;
+      display: block;
+    }
+
+    header>h1.title {
+      margin-left: 8px !important;
+      color: #fff !important;
+      -webkit-animation: fadeIn 1.4s;
+      -moz-animation: fadeIn 1.4s;
+      -o-animation: fadeIn 1.4s;
+      -ms-animation: fadeIn 1.4s;
+      animation: fadeIn 1.4s;
+    }
+
+    #beerwulf-logo path {
+      fill: transparent;
+      stroke-width: 1;
+      stroke: #cccccc;
+      stroke-dasharray: 420;
+      stroke-dashoffset: 0;
+      animation: animate-logo 1.8s linear forwards;
+    }
+
+    @keyframes animate-logo {
+      0% {
+        stroke-dashoffset: 0;
+        fill-opacity: 0%;
+        fill: transparent;
+      }
+
+      40% {
+        stroke-dashoffset: 420;
+      }
+
+      80% {
+        stroke-dashoffset: 840;
+        fill-opacity: 100%;
+      }
+
+      100% {
+        stroke-dashoffset: 840;
+        fill-opacity: 100%;
+        fill: #fff;
+      }
+    }
+
+    .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin: 10px auto;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #efefef;
+    }
+
+    .add,
+    .save-selected-sites {
+      width: 160px;
+    }
+
+    .add {
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 4px;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .restriction {
+      display: flex;
+      gap: 1.5em;
+      margin: 10px 0;
+      height: 44px;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .message.is-danger {
+      width: 260px;
+    }
+
+    .message-body {
+      font-size: 0.8rem;
+      padding: 4px;
+    }
+
+    .message.is-info .message-body {
+      font-size: 1rem;
+    }
+
+    section,
+    .save-selected-sites {
+      -webkit-animation: fadeIn 2s;
+      -moz-animation: fadeIn 2s;
+      -o-animation: fadeIn 2s;
+      -ms-animation: fadeIn 2s;
+      animation: fadeIn 2s;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @-moz-keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @-webkit-keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @-o-keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @-ms-keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* Hide Save Selection button if all inputs have been removed. */
+    .sites-to-block:empty+.save-selected-sites {
+      display: none;
+    }
+
+    .save-selected-sites {
+      display: block;
+    }
+
+    .remove {
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: red;
+      margin: auto 0px;
+    }
+
+    input {
+      padding: 8px 10px;
+      width: 280px;
+      border-radius: 5px;
+    }
+
+    input:focus {
+      outline: 1px solid #efefef;
+    }
+
+    .sites-to-block {
+      margin-bottom: 10px;
+    }
+
+    .fa-solid.fa-ban.active {
+      color: #ff0000;
+    }
+
+    .fa-solid.fa-camera.active {
+      color: #1781d8;
+    }
+
+    .fa-solid.fa-clipboard-list.active {
+      color: #0ef08a;
+    }
+
+    .fa-solid.fa-bug.active {
+      color: #f30303;
+    }
+
+    .screenshots.layout,
+    .checklist.layout,
+    .reporter.layout {
+      display: none;
+    }
+
+    .screenshots>.content>.message {
+      margin: 10px auto;
+    }
+
+    .url-right,
+    .url-wrong {
+      display: none;
+
+    }
+
+    .show {
+      display: flex;
+    }
+
+    .input:focus~.icon.is-small.is-right.url-right.show {
+      color: #039553;
+    }
+
+    .input:focus~.icon.is-small.is-right.url-wrong.show {
+      color: #eb1c1c;
+    }
+
+    .capture-screenshots {
+      display: flex;
+      align-items: center;
+    }
+
+    .message.is-warning {
+      width: 430px;
+      margin-left: 20px;
+    }
+
+    .message.is-warning .message-body {
+      font-size: 1rem;
+      padding: 7px 16px;
+    }
+
+    #extra-url {
+      margin: 0.5rem auto;
+      width: 170px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container m-5">
+    <header>
+      <a title="Beerwulf" href="https://www.beerwulf.com/" target="_blank" rel="noopener">
+        <svg width="124" height="124" viewBox="0 0 124 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="beerwulf-logo">
+            <path id="Clip-2" fill-rule="evenodd" clip-rule="evenodd"
+              d="M44.2515 19.6497C47.3641 23.4178 53.6432 31.0079 56.7558 34.7209C58.4478 34.2289 60.1955 33.9557 62.1068 33.9557C64.0182 33.9557 65.7653 34.2289 67.4579 34.7209C70.5705 31.0079 76.8502 23.4178 79.9616 19.6497C74.6112 16.9745 68.4956 15.5 62.1068 15.5C55.7181 15.5 49.6025 16.9745 44.2515 19.6497ZM71.1163 35.4309C73.5189 33.7921 78.2151 34.0108 80.29 34.8838C81.0545 33.8473 81.6003 32.8641 82.4732 31.0079C83.5661 28.6598 84.0581 29.3147 83.7303 33.0821C83.0203 41.71 84.0581 46.0239 89.2449 49.3546C86.6242 43.2935 88.2078 35.9222 87.6613 27.2398C87.4426 23.9091 86.242 21.0152 84.3313 19.4862C84.3313 19.4862 74.3386 31.4992 71.1163 35.4309ZM36.4979 27.2398C36.0053 35.9767 37.535 43.348 34.9143 49.3546C40.1556 46.0239 41.1934 41.71 40.4834 33.0821C40.1556 29.3147 40.6476 28.6053 41.7398 31.0079C42.6134 32.8641 43.1592 33.8473 43.9244 34.8838C45.998 34.0108 50.6948 33.7921 53.0429 35.4309C49.8212 31.4992 39.8279 19.4862 39.8279 19.4862C37.9172 21.0697 36.7159 23.9091 36.4979 27.2398ZM90.992 35.6489C90.7739 45.6961 93.1759 53.723 95.1963 54.3778C93.9411 54.7601 92.8488 54.8146 91.8656 54.6511C93.3401 55.3611 94.7601 55.4701 96.835 55.4701C96.835 58.255 95.7972 61.1489 94.8146 62.5683C95.3604 62.5683 96.5617 62.1315 97.1082 61.7492C95.5785 69.1758 92.1933 71.7419 82.9106 73.1074C81 73.38 79.4709 74.0894 78.2151 75.3465C76.8502 76.7658 75.8125 78.8401 75.157 81.5704C74.0102 86.2666 73.2463 89.2702 71.7718 91.3995C69.6969 94.4025 65.1091 96.1496 62.1614 96.1496C59.2129 96.1496 54.6258 94.4576 52.5509 91.3995C51.0764 89.2156 50.2574 86.2121 49.1657 81.5704C48.5102 78.8401 47.4731 76.7658 46.107 75.3465C44.8518 74.0894 43.3234 73.38 41.4127 73.1074C32.1294 71.6874 28.7987 69.1206 27.2152 61.7492C27.7065 62.1315 28.9078 62.5683 29.5081 62.5683C28.5255 61.0944 27.4871 58.2005 27.4871 55.4701C29.6178 55.4701 31.0372 55.3611 32.4565 54.6511C31.4739 54.8146 30.3817 54.7601 29.1258 54.3778C31.1462 53.723 33.5494 45.6961 33.3307 35.6489C33.2762 33.0821 33.2217 30.4615 33.3846 27.6221C26.1229 34.9396 21.7 44.8771 21.7 55.9069C21.7 72.779 38.2995 95.5499 46.6541 97.1873C43.9783 93.9657 44.7967 92.5463 48.8919 94.9489C55.1177 98.6074 59.4862 105.214 58.721 108.163C60.3591 108.818 64.7275 107.999 69.4782 101.064C73.7376 94.7847 74.9389 98.4432 73.3554 101.501C76.577 99.9722 80.1264 97.0232 82.2558 94.0202C83.5661 92.1096 84.6039 92.0005 83.7848 94.4576C92.8488 88.2324 102.514 70.3771 102.514 55.9069C102.514 44.8771 98.0908 34.9396 90.9375 27.6221C91.1017 30.4615 91.0472 33.0821 90.992 35.6489ZM42.2311 49.7913C38.354 54.1046 34.9143 58.2005 31.0372 58.6366C31.7472 61.6953 34.4224 64.8618 39.2827 66.8277C37.3169 67.4832 35.6788 67.6467 33.2762 67.2099C34.3678 68.5203 37.0437 69.3938 41.6847 70.0487C47.0357 70.7593 50.5851 74.4723 52.1142 80.9701C54.08 89.2156 54.681 90.6902 58.8852 92.6554C57.0284 90.8531 56.1548 89.0515 56.1548 86.976C56.1548 85.9395 57.2471 85.284 62.0523 85.284C66.803 85.284 67.9492 85.9395 67.9492 86.976C67.9492 88.9969 67.0756 90.7992 65.2195 92.6554C69.4237 90.6902 70.0247 89.2156 71.9899 80.9701C73.5734 74.4723 77.0683 70.8138 82.4193 70.0487C87.061 69.4483 89.7362 68.5203 90.8284 67.2099C88.4804 67.6467 86.8423 67.4832 84.8764 66.7725C89.7362 64.8073 92.412 61.6402 93.122 58.5827C89.2449 58.2005 85.8052 54.1046 81.928 49.7368C76.6854 43.8939 70.734 37.178 62.1068 37.178C53.4797 37.178 47.5277 43.8939 42.2311 49.7913ZM70.5705 53.723C71.8263 52.303 78.7609 49.5726 79.58 49.9004L75.5938 52.6307C76.3583 55.6882 74.9389 57.9824 72.5902 58.4185C69.7514 58.965 67.7311 59.4563 66.8575 59.7289C68.8227 56.8356 69.2602 55.1969 70.5705 53.723ZM51.6229 58.4185C49.2203 57.9824 47.8009 55.6882 48.6193 52.6307L44.6338 49.9004C45.4528 49.5726 52.3867 52.303 53.6432 53.723C54.9535 55.1969 55.4461 56.8356 57.3562 59.7289C56.482 59.4563 54.5168 58.965 51.6229 58.4185Z"
+              fill="white" />
+            <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="21" y="15" width="124" height="124">
+              <path id="Clip 2_2" fill-rule="evenodd" clip-rule="evenodd"
+                d="M44.2515 19.6497C47.3641 23.4178 53.6432 31.0079 56.7558 34.7209C58.4478 34.2289 60.1955 33.9557 62.1068 33.9557C64.0182 33.9557 65.7653 34.2289 67.4579 34.7209C70.5705 31.0079 76.8502 23.4178 79.9616 19.6497C74.6112 16.9745 68.4956 15.5 62.1068 15.5C55.7181 15.5 49.6025 16.9745 44.2515 19.6497ZM71.1163 35.4309C73.5189 33.7921 78.2151 34.0108 80.29 34.8838C81.0545 33.8473 81.6003 32.8641 82.4732 31.0079C83.5661 28.6598 84.0581 29.3147 83.7303 33.0821C83.0203 41.71 84.0581 46.0239 89.2449 49.3546C86.6242 43.2935 88.2078 35.9222 87.6613 27.2398C87.4426 23.9091 86.242 21.0152 84.3313 19.4862C84.3313 19.4862 74.3386 31.4992 71.1163 35.4309ZM36.4979 27.2398C36.0053 35.9767 37.535 43.348 34.9143 49.3546C40.1556 46.0239 41.1934 41.71 40.4834 33.0821C40.1556 29.3147 40.6476 28.6053 41.7398 31.0079C42.6134 32.8641 43.1592 33.8473 43.9244 34.8838C45.998 34.0108 50.6948 33.7921 53.0429 35.4309C49.8212 31.4992 39.8279 19.4862 39.8279 19.4862C37.9172 21.0697 36.7159 23.9091 36.4979 27.2398ZM90.992 35.6489C90.7739 45.6961 93.1759 53.723 95.1963 54.3778C93.9411 54.7601 92.8488 54.8146 91.8656 54.6511C93.3401 55.3611 94.7601 55.4701 96.835 55.4701C96.835 58.255 95.7972 61.1489 94.8146 62.5683C95.3604 62.5683 96.5617 62.1315 97.1082 61.7492C95.5785 69.1758 92.1933 71.7419 82.9106 73.1074C81 73.38 79.4709 74.0894 78.2151 75.3465C76.8502 76.7658 75.8125 78.8401 75.157 81.5704C74.0102 86.2666 73.2463 89.2702 71.7718 91.3995C69.6969 94.4025 65.1091 96.1496 62.1614 96.1496C59.2129 96.1496 54.6258 94.4576 52.5509 91.3995C51.0764 89.2156 50.2574 86.2121 49.1657 81.5704C48.5102 78.8401 47.4731 76.7658 46.107 75.3465C44.8518 74.0894 43.3234 73.38 41.4127 73.1074C32.1294 71.6874 28.7987 69.1206 27.2152 61.7492C27.7065 62.1315 28.9078 62.5683 29.5081 62.5683C28.5255 61.0944 27.4871 58.2005 27.4871 55.4701C29.6178 55.4701 31.0372 55.3611 32.4565 54.6511C31.4739 54.8146 30.3817 54.7601 29.1258 54.3778C31.1462 53.723 33.5494 45.6961 33.3307 35.6489C33.2762 33.0821 33.2217 30.4615 33.3846 27.6221C26.1229 34.9396 21.7 44.8771 21.7 55.9069C21.7 72.779 38.2995 95.5499 46.6541 97.1873C43.9783 93.9657 44.7967 92.5463 48.8919 94.9489C55.1177 98.6074 59.4862 105.214 58.721 108.163C60.3591 108.818 64.7275 107.999 69.4782 101.064C73.7376 94.7847 74.9389 98.4432 73.3554 101.501C76.577 99.9722 80.1264 97.0232 82.2558 94.0202C83.5661 92.1096 84.6039 92.0005 83.7848 94.4576C92.8488 88.2324 102.514 70.3771 102.514 55.9069C102.514 44.8771 98.0908 34.9396 90.9375 27.6221C91.1017 30.4615 91.0472 33.0821 90.992 35.6489ZM42.2311 49.7913C38.354 54.1046 34.9143 58.2005 31.0372 58.6366C31.7472 61.6953 34.4224 64.8618 39.2827 66.8277C37.3169 67.4832 35.6788 67.6467 33.2762 67.2099C34.3678 68.5203 37.0437 69.3938 41.6847 70.0487C47.0357 70.7593 50.5851 74.4723 52.1142 80.9701C54.08 89.2156 54.681 90.6902 58.8852 92.6554C57.0284 90.8531 56.1548 89.0515 56.1548 86.976C56.1548 85.9395 57.2471 85.284 62.0523 85.284C66.803 85.284 67.9492 85.9395 67.9492 86.976C67.9492 88.9969 67.0756 90.7992 65.2195 92.6554C69.4237 90.6902 70.0247 89.2156 71.9899 80.9701C73.5734 74.4723 77.0683 70.8138 82.4193 70.0487C87.061 69.4483 89.7362 68.5203 90.8284 67.2099C88.4804 67.6467 86.8423 67.4832 84.8764 66.7725C89.7362 64.8073 92.412 61.6402 93.122 58.5827C89.2449 58.2005 85.8052 54.1046 81.928 49.7368C76.6854 43.8939 70.734 37.178 62.1068 37.178C53.4797 37.178 47.5277 43.8939 42.2311 49.7913ZM70.5705 53.723C71.8263 52.303 78.7609 49.5726 79.58 49.9004L75.5938 52.6307C76.3583 55.6882 74.9389 57.9824 72.5902 58.4185C69.7514 58.965 67.7311 59.4563 66.8575 59.7289C68.8227 56.8356 69.2602 55.1969 70.5705 53.723ZM51.6229 58.4185C49.2203 57.9824 47.8009 55.6882 48.6193 52.6307L44.6338 49.9004C45.4528 49.5726 52.3867 52.303 53.6432 53.723C54.9535 55.1969 55.4461 56.8356 57.3562 59.7289C56.482 59.4563 54.5168 58.965 51.6229 58.4185Z"
+                fill="white" />
+            </mask>
+            <g mask="url(#mask0)">
+            </g>
+          </g>
+        </svg>
+      </a>
+      <h1 class="title">Wulfie Assistant</h1>
+    </header>
+
+    <div class="wrap">
+      <div class="field has-addons">
+        <p class="control">
+          <button class="button content conceal">
+            <span class="icon is-small">
+              <i class="fa-solid fa-ban"></i>
+            </span>
+            <span>Site Conceal</span>
+          </button>
+        </p>
+        <p class="control">
+          <button class="button content screenshots">
+            <span class="icon is-small">
+              <i class="fa-solid fa-camera"></i>
+            </span>
+            <span>Screenshots</span>
+          </button>
+        </p>
+        <p class="control">
+          <button class="button content checklist">
+            <span class="icon is-small">
+              <i class="fa-solid fa-clipboard-list"></i>
+            </span>
+            <span>Checklist</span>
+          </button>
+        </p>
+        <p class="control">
+          <button class="button content reporter">
+            <span class="icon is-small">
+              <i class="fa-solid fa-bug"></i>
+            </span>
+            <span>Reporter</span>
+          </button>
+        </p>
+      </div>
+    </div>
+
+    <section class="conceal layout">
+      <h4 class="title is-4">Concealing a site</h4>
+      <div class="content is-normal">
+        <p>Not to be confused with a <strong>site blocker</strong>, this merely hides the site that is saved
+          below. Either add the entire url, or just a word contained in the url. Once the input is added (or removed),
+          save the selection to make it official.
+        </p>
+        <article class="message is-info">
+          <div class="message-body">
+            Using <strong><em>www.netflix.com</em></strong> or
+            <strong><em>netflix</em></strong> will both get the job done.
+            The second option will also conceal any url containing <strong><em>netflix</em></strong>.
+          </div>
+        </article>
+        <h5 class="title is-5">Potential Benefits:</h5>
+        <ul>
+          <li>Gentle reminder the VPN is on, so avoiding <strong><em>those</em></strong> torrents might be
+            wise.</li>
+          <li>The site in question creates an environment for procrastination to thrive.</li>
+          <li>Sets the mood to induldge in guilty pleasures <strong><em>(wrong time & place?)</em></strong>.</li>
+        </ul>
+      </div>
+      <button class="add button is-success">
+        <span class="icon">
+          <i class="fa-sharp fa-solid fa-plus"></i>
+        </span>
+        <span>Add site to hide</span>
+      </button>
+      <div class="sites-to-block"></div>
+      <button type="submit" id="submitButton" class="save-selected-sites button is-success">
+        <span class="icon">
+          <i class="fa-sharp fa-solid fa-floppy-disk"></i>
+        </span>
+        <span>Save Selection</span>
+      </button>
+    </section>
+    <section class="screenshots layout">
+      <h4 class="title is-4">Get that evidence!</h4>
+      <div class="content is-normal">
+        <p>A picture is worth a thousand words. Increase clarity and improve response time by <strong><em>including a
+              URL</em></strong>.
+          Screenshots and URL(s) will be added to the report at the end.
+        </p>
+        <div class="field">
+          <p class="control has-icons-left url-container">
+            <input class="input url" type="text" placeholder="URL">
+            <span class="icon is-small is-left">
+              <i class="fa-solid fa-globe"></i>
+            </span>
+            <span class="icon is-small is-right url-right">
+              <i class="fas fa-check"></i>
+            </span>
+            <span class="icon is-small is-right url-wrong">
+              <i class="fa-solid fa-xmark"></i>
+            </span>
+          </p>
+        </div>
+        <button type="submit" id="extra-url" class="button is-success">
+          <span class="icon">
+            <i class="fa-sharp fa-solid fa-plus"></i>
+          </span>
+          <span>Add extra URL</span>
+        </button>
+        <section class="capture-screenshots">
+          <button type="submit" id="capture" class="button is-success">
+            <span class="icon is-small is-left">
+              <i class="fa-regular fa-globe"></i>
+            </span>
+            <span>Capture Screenshot</span>
+          </button>
+          <article class="message is-warning hide">
+            <div class="message-body">Please include valid urls before creating screenshots.
+            </div>
+          </article>
+        </section>
+        <article class="message is-info">
+          <div class="message-body">
+            The screenshot can be found in your default download location.
+            Feel free to customize the screenshot before uploading it below, otherwise select the file and save it.
+          </div>
+        </article>
+        <div id="file-js-example" class="file has-name">
+          <label class="file-label">
+            <input class="file-input" type="file" name="screenshot">
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
+              </span>
+              <span class="file-label">
+                Choose a file…
+              </span>
+            </span>
+            <span class="file-name">
+              No file chosen.
+            </span>
+          </label>
+        </div>
+      </div>
+    </section>
+    <section class="checklist layout">
+      <h4 class="title is-4">Checklist</h4>
+      <div class="content is-normal">
+        <p>In order to recreate an issue, or to figure out why something is amiss, it is helpful to know what steps were
+          taken.
+        </p>
+        <h5 class="title is-5">Food for thought:</h5>
+        <ul>
+          <li>Is this the case for all markets?</li>
+          <li>Which browser was used?</li>
+          <li>What type of mobile device and browser? <em>(if applicable)</em></li>
+        </ul>
+      </div>
+    </section>
+    <section class="reporter layout">
+      <h4 class="title is-4">Share accumulated Reports</h4>
+      <div class="content is-normal">
+        <p>Find out what Frontend technology is running on the page, where possible, and share that link!
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <script type="module" src="popup.js"></script>
+
+
+</body>
+
+</html>
