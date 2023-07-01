@@ -17,9 +17,9 @@ try{
       console.log("onUpdated listener, siteOptions: ", siteOptions);
       
       // Filter out any empty values.
-      const selectedOptions = siteOptions.filter((element) => element !== '');
+      const selectedOptions = siteOptions?.filter((element) => element !== '');
       console.log("onUpdated listener, Value currently is: ", selectedOptions);
-      if (selectedOptions.some(v => tab.url.includes(v))) {
+      if (selectedOptions?.some(v => tab.url.includes(v))) {
         chrome.scripting.executeScript({
           files: ['contentScript.js'],
           target: {tabId: tabId}
@@ -51,10 +51,10 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
       console.log("onActivated listener, siteOptions: ", siteOptions);
       
       // Filter out any empty values.
-      const selectedOptions = siteOptions.filter((element) => element !== '');
+      const selectedOptions = siteOptions?.filter((element) => element !== '');
       console.log("onActivated listener, Value currently is: ", selectedOptions);
       console.log("tab: ", tab);
-      if (selectedOptions.some(v => tab.url.includes(v))) {
+      if (selectedOptions?.some(v => tab.url.includes(v))) {
         chrome.scripting.executeScript({
           files: ['contentScript.js'],
           target: {tabId: tabId}
