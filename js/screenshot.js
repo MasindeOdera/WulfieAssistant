@@ -37,12 +37,12 @@ fileInput.onchange = (event) => {
     }
     // Generate a thumbnail for the saved image.
     generateThumbnail(file);
-
-    // Scroll down so that the Thumbnails are in view.
-    window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
     
     // Example: Log the file object to the console
     console.log(file);
+
+    // Scroll down, and also need to only reveal h5 when there is a thumbnail.
+    setTimeout(() => window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'}), 2000);
   }
 };
 
@@ -75,6 +75,8 @@ function generateThumbnail(file) {
   };
 
   reader.readAsDataURL(file);
+  // Scroll down so that the Thumbnails are in view.
+  window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
 };
 
 function openScreenshotCanvas() {
