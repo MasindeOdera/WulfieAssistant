@@ -10,6 +10,7 @@ const chooseFileButton = document.querySelector("#file-input-container .file-lab
 const urlRight = document.querySelector(".url-right");
 const urlWrong = document.querySelector(".url-wrong");
 const captureScreenshot = document.querySelector("#capture");
+const captureWarning = document.querySelector("#file-js-example .message.is-danger");
 
 fileInput.onchange = (event) => {
   if (event.target.files.length > 0) {
@@ -77,10 +78,15 @@ function openScreenshotCanvas() {
   });
 };
 
-// If no URL submitted, then prevent upload.
+// If no URL submitted, then prevent upload & display warning message.
 function checkForUrlFirst() {
-  // urlRight.classList.contains("show") ? fileInputContainer.setAttribute('disabled', 'disabled') : fileInputContainer.removeAttribute('disabled', 'disabled');
-  if (urlRight.classList.contains("show")) fileInputContainer.removeAttribute('disabled', 'disabled');
+  if (urlRight.classList.contains("show")) {
+    fileInputContainer.removeAttribute('disabled', 'disabled');
+  } else {
+    fileInputContainer.setAttribute('disabled', 'disabled');
+    removeClass(captureWarning, "hide", false);
+    updateIcon(captureWarning, "hide", true);
+  }
 };
 
 // const processUrlValidation = debounce(() => validateUrl(), 3000);
