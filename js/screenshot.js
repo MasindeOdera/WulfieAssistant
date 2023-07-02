@@ -19,15 +19,62 @@ fileInput.onchange = (event) => {
 
     // Have extra fields to add urls
     // Have a save icon(?), only save when there is at least one url.
-    
     // Access the file object
-    const selectedFile = event.target.files[0];
-    
-    // Use the file for further processing, such as uploading
+    const file = event.target.files[0];
+
+    // Save the file to localStorage.
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        // Get the file data (base64 encoded)
+        const fileData = reader.result;
+        // Store the file data in Chrome Storage.
+        chrome.storage.local.set({ uploadedFile: fileData }, function() {
+          console.log('Data saved to Chrome Storage: ', fileData);
+        });
+      };
+    }
+    // Generate a thumbnail for the saved image.
+    generateThumbnail(file);
+
+    // Scroll down so that the Thumbnails are in view.
+    window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
     
     // Example: Log the file object to the console
-    console.log(selectedFile);
+    console.log(file);
   }
+};
+
+function generateThumbnail(file) {
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const img = new Image();
+
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      const thumbnailWidth = 100;
+      const thumbnailHeight = 100;
+      canvas.width = thumbnailWidth;
+      canvas.height = thumbnailHeight;
+
+      ctx.drawImage(img, 0, 0, thumbnailWidth, thumbnailHeight);
+
+      const thumbnailDataUrl = canvas.toDataURL();
+
+      const thumbnailImg = new Image();
+      thumbnailImg.src = thumbnailDataUrl;
+
+      const thumbnailContainer = document.getElementById('thumbnailContainer');
+      thumbnailContainer.appendChild(thumbnailImg);
+    };
+
+    img.src = event.target.result;
+  };
+
+  reader.readAsDataURL(file);
 };
 
 function openScreenshotCanvas() {

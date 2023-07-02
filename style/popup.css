@@ -289,6 +289,10 @@ input:focus {
   width: 170px;
 }
 
+#file-js-example {
+  margin: 10px 0px;
+}
+
 #file-js-example .message.is-danger {
   margin-left: 20px;
 }

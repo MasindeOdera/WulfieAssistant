@@ -50,10 +50,13 @@ function checkStorage(){
   // Select Site Conceal tab.
   const navIcon = document.querySelectorAll(".icon.is-small > .fa-solid");
   const currentIcon = document.querySelector(`.button.content.conceal > .icon.is-small > .fa-solid`);
+
   // Remove any previously applied color to icons in navigation.
   navIcon.forEach(element => removeClass(element, "active", false));
+
   // Add color to selected icon in navigation.
   updateIcon(currentIcon, "active", false);
+
   // Use Mutation Observer to add link if section height is > 440px. 
   observeSectionHeight(conceal);
 }
@@ -76,8 +79,10 @@ function displaySection() {
 
   const navIcon = document.querySelectorAll(".icon.is-small > .fa-solid");
   const currentIcon = document.querySelector(`.button.content.${breakUpClass} > .icon.is-small > .fa-solid`);
+
   // Remove any previously applied color to icons in navigation.
   navIcon.forEach(element => removeClass(element, "active", false));
+  
   // Add color to selected icon in navigation.
   updateIcon(currentIcon, "active", false);
 
