@@ -3,8 +3,10 @@ import {debounce, updateIcon, removeClass} from './helperFunctions.js';
 const urlContainer = document.querySelector(".url-container");
 const inputUrl = document.querySelector(".input.url");
 const inputWarning = document.querySelector(".message.is-warning");
-const fileInput = document.querySelector("#file-js-example input[type=file]");
-const fileName = document.querySelector("#file-js-example .file-name");
+const fileInputContainer = document.querySelector("#file-js-example #file-input-container");
+const fileInput = document.querySelector("#file-input-container input[type=file]");
+const fileName = document.querySelector("#file-input-container .file-name");
+const chooseFileButton = document.querySelector("#file-input-container .file-label .file-cta");
 const urlRight = document.querySelector(".url-right");
 const urlWrong = document.querySelector(".url-wrong");
 const captureScreenshot = document.querySelector("#capture");
@@ -75,6 +77,12 @@ function openScreenshotCanvas() {
   });
 };
 
+// If no URL submitted, then prevent upload.
+function checkForUrlFirst() {
+  // urlRight.classList.contains("show") ? fileInputContainer.setAttribute('disabled', 'disabled') : fileInputContainer.removeAttribute('disabled', 'disabled');
+  if (urlRight.classList.contains("show")) fileInputContainer.removeAttribute('disabled', 'disabled');
+};
+
 // const processUrlValidation = debounce(() => validateUrl(), 3000);
 const processUrl = debounce(function validation(){
   removeClass(urlRight, "show", false);
@@ -121,3 +129,4 @@ function isUrlValid(string) {
 
 inputUrl.addEventListener("input", processUrl);
 captureScreenshot.addEventListener("click", openScreenshotCanvas);
+chooseFileButton.addEventListener("click", checkForUrlFirst);
