@@ -11,11 +11,15 @@ const urlRight = document.querySelector(".url-right");
 const urlWrong = document.querySelector(".url-wrong");
 const captureScreenshot = document.querySelector("#capture");
 const captureWarning = document.querySelector("#file-js-example .message.is-danger");
+const captureThumbnailHeader = document.querySelector(".capture-thumbnail-container .title");
 
 fileInput.onchange = (event) => {
   if (event.target.files.length > 0) {
     fileName.textContent = event.target.files[0].name;
     console.log("fileName: ", fileName);
+
+    // Display header.
+    // removeClass(captureThumbnailHeader, "hide", false); //Not sure what I wanted to do here...?
 
     // Have extra fields to add urls
     // Have a save icon(?), only save when there is at least one url.
@@ -67,8 +71,22 @@ function generateThumbnail(file) {
       const thumbnailImg = new Image();
       thumbnailImg.src = thumbnailDataUrl;
 
+      const deleteButton = document.createElement("button");
+      deleteButton.classList = "delete";
+      deleteButton.style.background = "red";
+      deleteButton.style.right = "10%";
+      deleteButton.style.bottom = "4%";
+      
+      // Create a div with class block to contain the individual thumbnail.
+      const block = document.createElement("div");
+      block.classList = "block";
+      block.style.marginRight = "4px";
+      block.appendChild(thumbnailImg);
+      block.appendChild(deleteButton);
+
       const thumbnailContainer = document.getElementById('thumbnailContainer');
-      thumbnailContainer.appendChild(thumbnailImg);
+      thumbnailContainer.style.display = "flex";
+      thumbnailContainer.appendChild(block);
     };
 
     img.src = event.target.result;
