@@ -46,7 +46,10 @@ fileInput.onchange = (event) => {
     console.log(file);
 
     // Scroll down, and also need to only reveal h5 when there is a thumbnail.
-    setTimeout(() => window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'}), 2000);
+    setTimeout(() => window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'}), 500);
+
+    // Clear the selected image from the span & replace with placeholder.
+    setTimeout(() => fileName.textContent = "Add another?", 2000);
   }
 };
 
@@ -71,6 +74,7 @@ function generateThumbnail(file) {
       const thumbnailImg = new Image();
       thumbnailImg.src = thumbnailDataUrl;
 
+      // Create delete icon for thumbnail.
       const deleteButton = document.createElement("button");
       deleteButton.classList = "delete";
       deleteButton.style.background = "red";
@@ -176,6 +180,8 @@ export function validateUrl() {
 
   if(isUrlValid(url)) {
     updateIcon(urlRight, "show", true);
+    // Allow users to add image.
+    fileInputContainer.removeAttribute('disabled', 'disabled');
   } else {
     // Remove "x" if there is no text.
     url === "" ? removeClass(urlWrong, "show", false) : updateIcon(urlWrong, "show", true);
