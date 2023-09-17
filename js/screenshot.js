@@ -53,6 +53,10 @@ fileInput.onchange = (event) => {
   }
 };
 
+function removeImage() {
+  this.parentElement.remove();
+}
+
 function generateThumbnail(file) {
   const reader = new FileReader();
   reader.onload = function(event) {
@@ -80,6 +84,9 @@ function generateThumbnail(file) {
       deleteButton.style.background = "red";
       deleteButton.style.right = "10%";
       deleteButton.style.bottom = "4%";
+
+      // Remove thumbnail when delete icon is clicked.
+      deleteButton.addEventListener("click", removeImage);
       
       // Create a div with class block to contain the individual thumbnail.
       const block = document.createElement("div");
@@ -130,10 +137,21 @@ function openScreenshotCanvas() {
       }).then((bitmap) => {
         track.stop();
         canvas = document.createElement("canvas");
-        canvas.width = bitmap.width;
-        canvas.height = bitmap.height;
+        canvas.width = 640;
+        canvas.height = 520;
+        console.log("canvas width: ", canvas.width);
+        console.log("canvas height: ", canvas.height);
         let context = canvas.getContext("2d");
-        context.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height);
+        // Calculate the new dimensions of the image
+        const scaleFactor = 0.4; // Check to see if this looks different with monitors attached.
+        const newWidth = bitmap.width * scaleFactor;
+        const newHeight = bitmap.height * scaleFactor;
+        // Calculate the position to center the image on the canvas
+        const x = (canvas.width - newWidth) / 2;
+        const y = (canvas.height - newHeight) / 2;
+        // Draw the image on the canvas with the new dimensions and position
+        context.drawImage(bitmap, x, y, newWidth, newHeight);
+        // context.drawImage(bitmap, 0, 0, bitmap.width * 0.5, bitmap.height * 0.5);
         return canvas.toDataURL();
       }).then((url) => {
         chrome.downloads.download({
