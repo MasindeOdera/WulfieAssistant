@@ -14,15 +14,16 @@ const captureWarning = document.querySelector("#file-js-example .message.is-dang
 const captureThumbnailHeader = document.querySelector(".capture-thumbnail-container .title");
 
 fileInput.onchange = (event) => {
-  if (event.target.files.length > 0) {
-    fileName.textContent = event.target.files[0].name;
-    console.log("fileName: ", fileName);
+  const files = event.target.files;
 
-    // Display header.
-    // removeClass(captureThumbnailHeader, "hide", false); //Not sure what I wanted to do here...?
+  if (files.length > 0) {
+    fileName.textContent = files[0].name;
+    console.log("fileName: ", fileName);
+    const fileDataArray = [];
 
     // Have extra fields to add urls
     // Have a save icon(?), only save when there is at least one url.
+
     // Access the file object
     const file = event.target.files[0];
 
@@ -33,6 +34,18 @@ fileInput.onchange = (event) => {
       reader.onload = function () {
         // Get the file data (base64 encoded)
         const fileData = reader.result;
+        // Add the file data to the array
+        fileDataArray.push({...{ filename: file.name, data: fileData }});
+        console.log("fileDataArray: ", fileDataArray); //still need to work on this
+
+        // Check if we have processed all files in the array
+        if (fileDataArray.length === files.length) {
+          // Store the array of file data in Chrome Storage.
+          chrome.storage.local.set({ uploadedFiles: fileDataArray }, function () {
+            console.log('Data saved to Chrome Storage: ', fileDataArray);
+          });
+        } // Also still need to work on this
+
         // Store the file data in Chrome Storage.
         chrome.storage.local.set({ uploadedFile: fileData }, function() {
           console.log('Data saved to Chrome Storage: ', fileData);
@@ -118,53 +131,14 @@ function openScreenshotCanvas() {
     setTimeout(() => updateIcon(inputWarning, "hide", false), 3000);
     return;
   };
-  
-  const sources = ["screen", "window", "tab"];
-  chrome.tabs.getCurrent((tab) => {
-    chrome.desktopCapture.chooseDesktopMedia(sources, tab, (streamId) => {
-      let track, canvas;
-      navigator.mediaDevices.getUserMedia({
-        video: {
-          mandatory: {
-            chromeMediaSource: "desktop",
-            chromeMediaSourceId: streamId
-          },
-        }
-      }).then((stream) => {
-        track = stream.getVideoTracks()[0];
-        const imageCapture = new ImageCapture(track);
-        return imageCapture.grabFrame();
-      }).then((bitmap) => {
-        track.stop();
-        canvas = document.createElement("canvas");
-        canvas.width = 640;
-        canvas.height = 520;
-        console.log("canvas width: ", canvas.width);
-        console.log("canvas height: ", canvas.height);
-        let context = canvas.getContext("2d");
-        // Calculate the new dimensions of the image
-        const scaleFactor = 0.4; // Check to see if this looks different with monitors attached.
-        const newWidth = bitmap.width * scaleFactor;
-        const newHeight = bitmap.height * scaleFactor;
-        // Calculate the position to center the image on the canvas
-        const x = (canvas.width - newWidth) / 2;
-        const y = (canvas.height - newHeight) / 2;
-        // Draw the image on the canvas with the new dimensions and position
-        context.drawImage(bitmap, x, y, newWidth, newHeight);
-        // context.drawImage(bitmap, 0, 0, bitmap.width * 0.5, bitmap.height * 0.5);
-        return canvas.toDataURL();
-      }).then((url) => {
-        chrome.downloads.download({
-          filename: "screenshot.png",
-          url: url,
-        }, () => {
-          canvas.remove();
-        });
-      }).catch((err) => {
-        console.log(err);
-      })
-    });
-  });
+
+  const screenshotCapture = {
+    url: "desktopCapture.html",
+    type: "popup",
+    width: 800,
+    height: 700
+  };
+  chrome.windows.create(screenshotCapture);
 };
 
 // If no URL submitted, then prevent upload & display warning message.
